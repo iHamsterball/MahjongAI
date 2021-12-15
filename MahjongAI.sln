@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MahjongLib", "MahjongLib\MahjongLib.vcxproj", "{E43247C1-C6AB-44BD-A163-528E827ADC89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahjongAI", "MahjongAI\MahjongAI.csproj", "{C64EAF3D-40E2-40BB-B02B-49C69F848572}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cowboy.Sockets", "Cowboy.Sockets\Cowboy.Sockets.csproj", "{39D916FE-2C09-47AB-A5A2-1A23787F20BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,18 @@ Global
 		{C64EAF3D-40E2-40BB-B02B-49C69F848572}.Release|x64.Build.0 = Release|Any CPU
 		{C64EAF3D-40E2-40BB-B02B-49C69F848572}.Release|x86.ActiveCfg = Release|Any CPU
 		{C64EAF3D-40E2-40BB-B02B-49C69F848572}.Release|x86.Build.0 = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|x64.Build.0 = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|x86.ActiveCfg = Release|Any CPU
+		{39D916FE-2C09-47AB-A5A2-1A23787F20BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

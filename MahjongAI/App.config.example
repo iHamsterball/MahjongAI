@@ -11,7 +11,7 @@
   <appSettings>
 
     <!-- 
-        Platform. "Tenhou" or "Majsoul".
+        Platform. "Tenhou", "Majsoul" or "MajsoulExt".
         
         NOTE: If you choose "Majsoul", you must join a private room by setting
         a value for "PrivateRoom" below.

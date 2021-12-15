@@ -29,6 +29,10 @@ namespace MahjongAI
             {
                 client = new MajsoulClient(config);
             }
+            else if (config.Platform == Platform.MajsoulExt)
+            {
+                client = new MajsoulExtension(config);
+            }
 
             gameEnd.Reset();
 

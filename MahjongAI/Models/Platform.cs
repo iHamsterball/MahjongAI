@@ -10,5 +10,6 @@ namespace MahjongAI.Models
     {
         Tenhou,
         Majsoul,
+        MajsoulExt,
     }
 }
