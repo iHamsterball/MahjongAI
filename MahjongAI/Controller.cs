@@ -40,6 +40,7 @@ namespace MahjongAI
             client.OnInit += OnInit;
             client.OnAgari += OnAgari;
             client.OnNaki += OnNaki;
+            client.OnChanKan += OnChanKan;
             client.OnReach += OnReach;
             client.OnUnknownEvent += OnUnknownEvent;
             isRunning = true;
@@ -58,6 +59,7 @@ namespace MahjongAI
             client.OnInit -= OnInit;
             client.OnAgari -= OnAgari;
             client.OnNaki -= OnNaki;
+            client.OnChanKan -= OnChanKan;
             client.OnReach -= OnReach;
             client.OnUnknownEvent -= OnUnknownEvent;
             isRunning = false;
@@ -75,22 +77,22 @@ namespace MahjongAI
 
         protected virtual void OnConnectionException()
         {
-            
+
         }
 
         public virtual void OnDraw(Tile tile)
         {
-            
+
         }
 
         public virtual void OnWait(Tile tile, Player fromPlayer)
         {
-            
+
         }
 
         protected virtual void OnDiscard(Player player, Tile tile)
         {
-            
+
         }
 
         protected virtual void OnReach(Player player)
@@ -99,6 +101,11 @@ namespace MahjongAI
         }
 
         protected virtual void OnNaki(Player player, FuuroGroup fuuro)
+        {
+
+        }
+
+        protected virtual void OnChanKan(Player player, Tile tile)
         {
 
         }
@@ -115,17 +122,17 @@ namespace MahjongAI
 
         protected virtual void OnGameStart(bool continued)
         {
-            
+
         }
 
         protected virtual void OnGameEnd()
         {
-            
+
         }
 
         protected virtual void OnUnknownEvent(string str)
         {
-            
+
         }
     }
 }

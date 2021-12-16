@@ -398,7 +398,9 @@ namespace MahjongAI
                     fuuro = HandleAnkan(currentPlayer, (string)data["tiles"]);
                 }
 
+                Tile tile = fuuro.Last();
                 if (!syncing) InvokeOnNaki(currentPlayer, fuuro);
+                if (!syncing) InvokeOnChanKan(currentPlayer, tile);
             }
             else if (message.method == ".lq.ActionPrototype" && (string)message.data["name"] == "ActionBaBei")
             {
@@ -407,6 +409,9 @@ namespace MahjongAI
                 if (data["seat"] != null) seat = (int)data["seat"];
                 Player currentPlayer = gameData.players[NormalizedPlayerId(seat)];
                 HandleNuku(currentPlayer);
+
+                Tile tile = new Tile(name: "4z");
+                if (!syncing) InvokeOnChanKan(currentPlayer, tile);
             }
         }
 

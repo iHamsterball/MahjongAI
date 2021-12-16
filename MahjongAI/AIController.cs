@@ -157,6 +157,20 @@ namespace MahjongAI
             }
         }
 
+        protected override void OnChanKan(Player currentPlayer, Tile tile)
+        {
+            if (currentPlayer == player) return;
+
+            EvalResult currentEvalResult = eval13();
+            player.hand.Add(tile);
+            EvalResult currentEvalResult14 = eval14(tile, 1, riichi: player.reached, tsumo: false, isLastTile: gameData.remainingTile == 0);
+            player.hand.Remove(tile);
+            if (currentEvalResult14.Distance == -1 && !currentEvalResult.Furiten && currentEvalResult14.E_Point > 0)
+            {
+                client.Ron();
+            }
+        }
+
         private void decideMove(bool rightAfterNaki = false) {
             Tile discardTile = chooseDiscardForAtk(out List<Tuple<Tile, EvalResult>> options, out EvalResult evalResult, calcOptimization: true);
             if (!shouldDef(evalResult, discardTile))
