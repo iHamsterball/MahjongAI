@@ -26,6 +26,16 @@ namespace MahjongAI.Models
             }
         }
 
+        public void setPlayers(int playerCount)
+        {
+            players = new Player[playerCount];
+            for (int i = 0; i < playerCount; i++)
+            {
+                players[i] = new Player();
+                players[i].id = i;
+            }
+        }
+
         public bool isAllLast(GameType gameType)
         {
             return !gameType.HasFlag(GameType.Match_EastSouth) && (seq == 4 || direction == Direction.S)

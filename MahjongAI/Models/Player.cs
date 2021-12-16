@@ -17,6 +17,7 @@ namespace MahjongAI.Models
         public Hand hand = new Hand();
         public Graveyard graveyard = new Graveyard();
         public Fuuro fuuro = new Fuuro();
+        public Nuku nuku = new Nuku();
         public SafeTiles safeTiles;
 
         public Player()

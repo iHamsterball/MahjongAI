@@ -110,7 +110,7 @@ namespace MahjongAI
 
         private int NormalizedPlayerId(int seat)
         {
-            return (seat - playerSeat + 4) % 4;
+            return (seat - playerSeat + gameData.players.Count()) % gameData.players.Count();
         }
 
         private void HandleMessage(Message message, bool forSync = false)
@@ -171,9 +171,9 @@ namespace MahjongAI
                 var data = message.data["data"];
                 int[] points = data["scores"].Select(t => (int)t).ToArray();
                 int[] rawPointDeltas = data["deltaScores"].Select(t => (int)t).ToArray();
-                int[] pointDeltas = new int[4];
+                int[] pointDeltas = new int[gameData.players.Count()];
 
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < gameData.players.Count(); i++)
                 {
                     gameData.players[NormalizedPlayerId(i)].point = points[i];
                     pointDeltas[NormalizedPlayerId(i)] = rawPointDeltas[i];
@@ -216,8 +216,8 @@ namespace MahjongAI
             {
                 var scoreObj = message.data["data"]["scores"][0];
                 int[] rawPointDeltas = scoreObj["deltaScores"] != null ? scoreObj["deltaScores"].Select(t => (int)t).ToArray() : new[] { 0, 0, 0, 0 };
-                int[] pointDeltas = new int[4];
-                for (var i = 0; i < 4; i++)
+                int[] pointDeltas = new int[gameData.players.Count()];
+                for (var i = 0; i < gameData.players.Count(); i++)
                 {
                     gameData.players[NormalizedPlayerId(i)].point = (int)scoreObj["oldScores"][i] + rawPointDeltas[i];
                     pointDeltas[NormalizedPlayerId(i)] = rawPointDeltas[i];
@@ -400,6 +400,14 @@ namespace MahjongAI
 
                 if (!syncing) InvokeOnNaki(currentPlayer, fuuro);
             }
+            else if (message.method == ".lq.ActionPrototype" && (string)message.data["name"] == "ActionBaBei")
+            {
+                var data = message.data["data"];
+                var seat = 0;
+                if (data["seat"] != null) seat = (int)data["seat"];
+                Player currentPlayer = gameData.players[NormalizedPlayerId(seat)];
+                HandleNuku(currentPlayer);
+            }
         }
 
         private void HandleInit(JToken data)
@@ -439,7 +447,10 @@ namespace MahjongAI
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            int[] seats = data["scores"].Select(t => (int)t).ToArray();
+            gameData.setPlayers(seats.Count());
+            int playerCount = gameData.players.Count();
+            for (int i = 0; i < playerCount; i++)
             {
                 gameData.players[NormalizedPlayerId(i)].point = (int)data["scores"][i];
                 gameData.players[NormalizedPlayerId(i)].reached = false;
@@ -448,11 +459,11 @@ namespace MahjongAI
                 gameData.players[NormalizedPlayerId(i)].hand = new Hand();
             }
 
-            int oyaNum = (4 - playerSeat + gameData.seq - 1) % 4;
+            int oyaNum = (playerCount - playerSeat + gameData.seq - 1) % playerCount;
             gameData.players[oyaNum].direction = Direction.E;
-            gameData.players[(oyaNum + 1) % 4].direction = Direction.S;
-            gameData.players[(oyaNum + 2) % 4].direction = Direction.W;
-            gameData.players[(oyaNum + 3) % 4].direction = Direction.N;
+            gameData.players[(oyaNum + 1) % playerCount].direction = Direction.S;
+            gameData.players[(oyaNum + 2) % playerCount].direction = Direction.W;
+            if (playerCount == 4) gameData.players[(oyaNum + 3) % playerCount].direction = Direction.N;
 
             foreach (var tileName in data["tiles"].Select(t => (string)t))
             {
@@ -523,7 +534,7 @@ namespace MahjongAI
                 }
                 else
                 {
-                    for (var i = 0; i < 4; i++)
+                    for (var i = 0; i < gameData.players.Count(); i++)
                     {
                         fuuroGroup.Add(new Tile(tileName));
                     }
@@ -551,6 +562,16 @@ namespace MahjongAI
             }
 
             return fuuroGroup;
+        }
+
+        private void HandleNuku(Player currentPlayer)
+        {
+            if (currentPlayer == player)
+            {
+                Tile tile = player.hand.First(t => t.Name == "4z");
+                player.hand.Remove(tile);
+                player.nuku.Add(tile);
+            }
         }
 
         public override void Pass()
@@ -625,7 +646,8 @@ namespace MahjongAI
 
         public override void Nuku()
         {
-            throw new NotSupportedException();
+            Deley();
+            Send(new { type = ReplyType.Nuku, index = 0 }).Wait();
         }
 
         public override void Reach(Tile tile)
@@ -670,6 +692,7 @@ namespace MahjongAI
             Tsumo = 8,
             Ron = 9,
             Ryuukyoku = 10,
+            Nuku = 11,
         }
     }
 }

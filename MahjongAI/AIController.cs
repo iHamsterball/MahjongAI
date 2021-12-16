@@ -74,7 +74,7 @@ namespace MahjongAI
                 {
                     candidates.Add(tryGetFuuroGroup(FuuroType.minkan, new[] { Tuple.Create(tile.GeneralId, 3) }, tile));
                 }
-                if (fromPlayer.id == 3 && tile.Type != "z")
+                if (fromPlayer.id == 3 && tile.Type != "z" && gameData.players.Count() == 4)
                 {
                     candidates.AddRange(new List<FuuroGroup>()
                     {
@@ -168,6 +168,10 @@ namespace MahjongAI
                 else if (!rightAfterNaki && shouldKaKan(discardTile))
                 {
                     client.Kakan(discardTile);
+                }
+                else if (!rightAfterNaki && shouldNuku())
+                {
+                    client.Nuku();
                 }
                 else if (shouldReach(discardTile, evalResult))
                 {
@@ -281,6 +285,27 @@ namespace MahjongAI
                 || resultBefore.Distance <= 2 && (resultAfter.E_Point > resultBefore.E_Point * (0.4 - (17 - gameData.remainingTile / 4) * 0.02) || (resultBefore.E_Point - resultAfter.E_Point) < 2000) && resultAfter.E_Point > 0
                     && resultBefore.Distance > resultAfter.Distance && (resultBefore.E_PromotionCount[1] <= resultAfter.E_PromotionCount[0] || resultBefore.VisibleFuuroCount > 0)
                 || isAllLastTop() && hasYakuhai(); // All last top 速攻
+        }
+
+        private bool shouldNuku()
+        {
+            if (player.hand.Count(t => t.Name == "4z") == 0) return false;
+            Tile tile = player.hand.First(t => t.Name == "4z");
+            int distance = calcDistance();
+            player.nuku.Add(tile);
+            player.hand.Remove(tile);
+            int d2 = calcDistance();
+
+            bool decision = false;
+            if (distance == d2)
+            {
+                decision = true;
+            }
+
+            player.nuku.Remove(tile);
+            player.hand.Add(tile);
+
+            return decision;
         }
 
         public Tile chooseDiscardForAtk(bool calcOptimization, int depth = -1)
