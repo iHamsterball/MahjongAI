@@ -21,6 +21,7 @@ namespace MahjongAI
         public event Action<bool, Direction, int, int, Player[]> OnInit;
         public event Action<Player, Player, int, int[], Player[]> OnAgari;
         public event Action<Player, FuuroGroup> OnNaki;
+        public event Action<Player> OnNuku;
         public event Action<Player, Tile> OnChanKan;
         public event Action<Player> OnReach;
         public event Action<string> OnUnknownEvent;
@@ -136,6 +137,11 @@ namespace MahjongAI
         protected void InvokeOnNaki(Player player, FuuroGroup fuuro)
         {
             OnNaki?.Invoke(player, fuuro);
+        }
+
+        protected void InvokeOnNuku(Player player)
+        {
+            OnNuku?.Invoke(player);
         }
 
         protected void InvokeOnChanKan(Player player, Tile tile)

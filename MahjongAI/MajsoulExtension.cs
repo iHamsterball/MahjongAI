@@ -408,9 +408,8 @@ namespace MahjongAI
                 var seat = 0;
                 if (data["seat"] != null) seat = (int)data["seat"];
                 Player currentPlayer = gameData.players[NormalizedPlayerId(seat)];
-                HandleNuku(currentPlayer);
-
-                Tile tile = new Tile(name: "4z");
+                Tile tile = HandleNuku(currentPlayer);
+                if (!syncing) InvokeOnNuku(currentPlayer);
                 if (!syncing) InvokeOnChanKan(currentPlayer, tile);
             }
         }
@@ -569,14 +568,16 @@ namespace MahjongAI
             return fuuroGroup;
         }
 
-        private void HandleNuku(Player currentPlayer)
+        private Tile HandleNuku(Player currentPlayer)
         {
             if (currentPlayer == player)
             {
                 Tile tile = player.hand.First(t => t.Name == "4z");
                 player.hand.Remove(tile);
                 player.nuku.Add(tile);
+                return tile;
             }
+            return new Tile(name: "4z");
         }
 
         public override void Pass()

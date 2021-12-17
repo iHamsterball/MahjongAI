@@ -75,6 +75,11 @@ namespace MahjongAI
             Trace.WriteLine(string.Format("player({0}) {1}: {2}", player.id, fuuro.type.ToString(), fuuro.ToString(" ", t => t.Name)));
         }
 
+        protected override void OnNuku(Player player)
+        {
+            Trace.WriteLine(string.Format("player({0}) nuku 4z", player.id));
+        }
+
         protected override void OnGameStart(bool continued)
         {
             if (!continued)

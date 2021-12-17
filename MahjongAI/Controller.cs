@@ -40,6 +40,7 @@ namespace MahjongAI
             client.OnInit += OnInit;
             client.OnAgari += OnAgari;
             client.OnNaki += OnNaki;
+            client.OnNuku += OnNuku;
             client.OnChanKan += OnChanKan;
             client.OnReach += OnReach;
             client.OnUnknownEvent += OnUnknownEvent;
@@ -59,6 +60,7 @@ namespace MahjongAI
             client.OnInit -= OnInit;
             client.OnAgari -= OnAgari;
             client.OnNaki -= OnNaki;
+            client.OnNuku -= OnNuku;
             client.OnChanKan -= OnChanKan;
             client.OnReach -= OnReach;
             client.OnUnknownEvent -= OnUnknownEvent;
@@ -101,6 +103,11 @@ namespace MahjongAI
         }
 
         protected virtual void OnNaki(Player player, FuuroGroup fuuro)
+        {
+
+        }
+
+        protected virtual void OnNuku(Player player)
         {
 
         }

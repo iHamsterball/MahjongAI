@@ -15,6 +15,7 @@ namespace MahjongAI.Models
         public int DiscardedDoraCount { get; set; }
         public int DoraCount { get; set; }
         public int DoraInFuuroCount { get; set; }
+        public int NukuCount { get; set; }
         public int KanCount { get; set; }
         public List<double> E_PromotionCount { get; set; }
         public int E_NormalPromitionCount { get; set; }
@@ -26,7 +27,7 @@ namespace MahjongAI.Models
         {
             return ToString(int.MaxValue);
         }
-        
+
         public string ToString(int currentDistance)
         {
             return string.Format("E_PromotionCount: [{0}]{1}{5}{2}{3}{4}",

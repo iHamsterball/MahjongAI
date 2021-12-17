@@ -73,6 +73,10 @@ namespace MahjongAI
                 {
                     yield return tile;
                 }
+                foreach (var tile in p.nuku)
+                {
+                    yield return tile;
+                }
             }
             foreach (var tile in gameData.dora)
             {
@@ -161,7 +165,7 @@ namespace MahjongAI
 
         private bool isAllLastBottom()
         {
-            return isAllLast() && gameData.getPlayerByRanking(4) == player;
+            return isAllLast() && gameData.getPlayerByRanking(gameData.players.Count()) == player;
         }
 
         // 自摸后针对的点数变化估计

@@ -38,6 +38,10 @@ namespace MahjongAI
                 {
                     client.Ankan(tile);
                 }
+                else if (shouldNuku(tile))
+                {
+                    client.Nuku();
+                }
                 else
                 {
                     client.Discard(tile);
@@ -301,10 +305,10 @@ namespace MahjongAI
                 || isAllLastTop() && hasYakuhai(); // All last top 速攻
         }
 
-        private bool shouldNuku()
+        private bool shouldNuku(Tile tile=null)
         {
-            if (player.hand.Count(t => t.Name == "4z") == 0) return false;
-            Tile tile = player.hand.First(t => t.Name == "4z");
+            if (player.hand.Count(t => t.Name == "4z") == 0 && (tile == null || tile != null && tile.Name != "4z")) return false;
+            if (tile == null) tile = player.hand.First(t => t.Name == "4z");
             int distance = calcDistance();
             player.nuku.Add(tile);
             player.hand.Remove(tile);
@@ -441,6 +445,7 @@ namespace MahjongAI
             }
             res.DoraInFuuroCount = player.fuuro.Tiles.Sum(t => doraValue(t));
             res.DoraCount = player.hand.Sum(t => doraValue(t)) + res.DoraInFuuroCount;
+            res.NukuCount = player.nuku.Count();
             res.VisibleFuuroCount = player.fuuro.VisibleCount;
             res.KanCount = player.fuuro.Count(f => f.type == FuuroType.ankan || f.type == FuuroType.kakan || f.type == FuuroType.minkan);
             var promotionTiles = new List<Tuple<Tile, EvalResult>>();
@@ -451,7 +456,7 @@ namespace MahjongAI
             var visibleTiles = new HashSet<int>(getVisibleTiles().Select(t => t.Id));
             for (var i = 0; i < Tile.TotalCount; i++)
             {
-                if (!visibleTiles.Contains(i))
+                if (!visibleTiles.Contains(i) && checkExist(i))
                 {
                     var tile = new Tile(i);
                     if (!evalResults.TryGetValue(tile.Name, out EvalResult result))
@@ -504,7 +509,7 @@ namespace MahjongAI
             {
                 promotionTiles.RemoveAll(tuple => tuple.Item2.E_Point <= 0); // 把得点为0的情况去掉（不算进张）
             }
-            
+
             res.E_PromotionCount = new List<double>() { promotionTiles.Count };
             for (var i = 0; i < Math.Min(depth - 1, res.Distance); i++)
             {
@@ -519,7 +524,7 @@ namespace MahjongAI
             {
                 res.OptimizationCount = potentialOptimizationTiles.Count(tuple => evalResultComp.Compare(tuple.Item2, res) > 0);
             }
-            
+
             return res;
         }
 
@@ -533,7 +538,7 @@ namespace MahjongAI
                 res.Distance = calcDistance(out normalDistance);
                 res.NormalDistance = normalDistance;
             }
-            
+
             if (depth <= 1 || res.Distance == -1)
             {
                 if (res.Distance == -1)
@@ -549,6 +554,12 @@ namespace MahjongAI
                 chooseDiscardForAtk(out tmpResult, calcOptimization: false, depth: depth - 1);
                 return tmpResult;
             }
+        }
+
+        private bool checkExist(int id)
+        {
+            int playerCount = gameData.players.Count();
+            return playerCount == 4 || (playerCount == 3 && !(id >= 4 && id <= 31));
         }
 
         private bool probablyChiitoitsu(EvalResult evalResult, Hand hand)
@@ -628,6 +639,10 @@ namespace MahjongAI
                     return res;
                 }
                 else if ((res = x.DoraInFuuroCount.CompareTo(y.DoraInFuuroCount)) != 0) // 副露中的dora数
+                {
+                    return res;
+                }
+                else if ((res = x.NukuCount.CompareTo(y.NukuCount)) != 0) // 北dora数
                 {
                     return res;
                 }
