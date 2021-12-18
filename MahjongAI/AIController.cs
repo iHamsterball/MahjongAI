@@ -307,19 +307,18 @@ namespace MahjongAI
 
         private bool shouldNuku(Tile tile)
         {
+            if (gameData.players.Count() == 4) return false;
             if (tile.Name == "4z") return true;
             if (player.hand.Count(t => t.Name == "4z") == 0 && tile.Name != "4z") return false;
             tile = player.hand.First(t => t.Name == "4z");
-            int distance = calcDistance();
+            int before = calcDistance();
             player.nuku.Add(tile);
             player.hand.Remove(tile);
-            int d2 = calcDistance();
+            int after = calcDistance();
 
             bool decision = false;
-            if (distance == d2)
-            {
-                decision = true;
-            }
+            // TODO: 4z is used only in Kokushi/Shousushi/Daisushi, it should nuku on every other conditions of normal syanten
+            decision = (before == after) || false;
 
             player.nuku.Remove(tile);
             player.hand.Add(tile);

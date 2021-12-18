@@ -156,7 +156,6 @@ namespace MahjongAI.Util
             {
                 res = Math.Min(res, TiitoituSyanten());
                 res = Math.Min(res, KokusiSyanten());
-                res = Math.Min(res, KokusiSyanten());
             }
             return res;
         }
