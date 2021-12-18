@@ -187,7 +187,7 @@ namespace MahjongAI
                 {
                     client.Kakan(discardTile);
                 }
-                else if (!rightAfterNaki && shouldNuku())
+                else if (!rightAfterNaki && shouldNuku(discardTile))
                 {
                     client.Nuku();
                 }
@@ -305,10 +305,11 @@ namespace MahjongAI
                 || isAllLastTop() && hasYakuhai(); // All last top 速攻
         }
 
-        private bool shouldNuku(Tile tile=null)
+        private bool shouldNuku(Tile tile)
         {
-            if (player.hand.Count(t => t.Name == "4z") == 0 && (tile == null || tile != null && tile.Name != "4z")) return false;
-            if (tile == null) tile = player.hand.First(t => t.Name == "4z");
+            if (tile.Name == "4z") return true;
+            if (player.hand.Count(t => t.Name == "4z") == 0 && tile.Name != "4z") return false;
+            tile = player.hand.First(t => t.Name == "4z");
             int distance = calcDistance();
             player.nuku.Add(tile);
             player.hand.Remove(tile);
